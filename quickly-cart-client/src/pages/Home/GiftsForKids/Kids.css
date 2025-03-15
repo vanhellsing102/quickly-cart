@@ -1,0 +1,3 @@
+.drop{
+    filter: drop-shadow(1px 1px 20px oklch(0.865 0.127 207.078));
+}

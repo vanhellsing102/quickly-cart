@@ -1,0 +1,6 @@
+.banner{
+    background: url('../../assets/banner/fashionBanner.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
