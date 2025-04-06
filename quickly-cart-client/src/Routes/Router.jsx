@@ -13,6 +13,10 @@ import Shop from '../pages/Shop/Shop';
 import Checkout from "../pages/Cart/Checkout";
 import Orders from "../pages/Cart/Orders";
 import AdminLogin from "../pages/AdminDashboard/AdminLogin";
+import DashboardLayout from "../pages/AdminDashboard/DashboardLayout";
+import Dashboard from "../pages/AdminDashboard/Dashboard";
+import AddProduct from "../pages/AdminDashboard/AddProduct";
+import ManageProduct from "../pages/AdminDashboard/ManageProduct";
 
 const router = createBrowserRouter([
     {
@@ -68,6 +72,24 @@ const router = createBrowserRouter([
     {
         path: '/admin',
         element: <AdminLogin></AdminLogin>
+    },
+    {
+        path: 'adminProfile',
+        element: <DashboardLayout></DashboardLayout>,
+        children: [
+            {
+                path: '',
+                element: <Dashboard></Dashboard>
+            },
+            {
+                path: 'add-product',
+                element: <AddProduct></AddProduct>
+            },
+            {
+                path: 'manage-product',
+                element: <ManageProduct></ManageProduct>
+            }
+        ]
     }
 ])
 export default router;

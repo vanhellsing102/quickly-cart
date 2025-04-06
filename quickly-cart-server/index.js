@@ -52,6 +52,7 @@ async function run() {
     const productCollection = client.db("quicklyCartDB").collection("products");
     const userCollection = client.db("quicklyCartDB").collection("users");
     const cartCollection = client.db("quicklyCartDB").collection("carts");
+    const adminCollection = client.db("quicklyCartDB").collection("admin");
 
     // jwt related api---------------------------------------------------------------------------------
     app.post('/jwt', async(req, res) =>{
@@ -149,6 +150,20 @@ async function run() {
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
       res.send(result);
+    })
+    app.post('/admin', async(req, res) =>{
+      const userName = req.body.userName;
+      const password = req.body.password;
+      const admin = await adminCollection.findOne({userName: userName});
+      if(!admin){
+        res.send({message: "admin not found"});
+      } else{
+        if(admin.password == password){
+          res.send(admin);
+        }else{
+          res.send({message: "enter the valid password"});
+        }
+      }
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

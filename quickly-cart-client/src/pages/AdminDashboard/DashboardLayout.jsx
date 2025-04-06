@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, NavLink, Outlet } from 'react-router-dom';
+import { MdDashboard, MdManageHistory } from "react-icons/md";
+import { IoMdAdd, IoIosNotifications } from "react-icons/io";
+import { RiUser6Fill } from "react-icons/ri";
+import { CgMenuMotion } from "react-icons/cg";
 
 const DashboardLayout = () => {
+    const [openMenu, setOpenMenu] = useState(false);
+
     return (
         <div>
-            DashboardLayout
+            <div className='flex justify-end'>
+                <div className='md:w-[calc(100%-128px)] w-full flex text-xl justify-end  items-center h-10 pr-10 gap-3 bg-blue-200 py-3'>
+                    <Link><IoIosNotifications></IoIosNotifications></Link>
+                    <Link><RiUser6Fill></RiUser6Fill></Link>
+                    <button onClick={() =>setOpenMenu(!openMenu)} className='block md:hidden'><CgMenuMotion></CgMenuMotion></button>
+                </div>
+            </div>
+            <div className='flex'>
+                <div className={`md:flex ${openMenu ? "flex" : "hidden"}`}>
+                    <div className='w-32 bg-slate-200 min-h-screen flex justify-center items-center gap-3 flex-col'>
+                        <NavLink onClick={() =>setOpenMenu(false)} to={''} className='p-2' end>
+                            <MdDashboard className='text-2xl'></MdDashboard>
+                        </NavLink>
+                        <NavLink onClick={() =>setOpenMenu(false)} to={'add-product'} className='p-2' end>
+                            <IoMdAdd className='text-2xl'></IoMdAdd>
+                        </NavLink>
+                        <NavLink onClick={() =>setOpenMenu(false)} to={'manage-product'} className='p-2' end>
+                            <MdManageHistory  className='text-2xl'></MdManageHistory>
+                        </NavLink>
+                    </div>
+                </div>
+                <div className='p-10 w-full'>
+                    <Outlet></Outlet>
+                </div>
+            </div>
         </div>
     );
 };
