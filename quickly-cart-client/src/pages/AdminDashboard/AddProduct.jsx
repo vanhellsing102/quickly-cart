@@ -5,7 +5,7 @@ import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const imageApiKey = import.meta.env.VITE_IMAGEAPIKEY;
-const imageApiUrl = `https://api.imgbb.com/1/upload?key=${imageApiKey}`
+const imageApiUrl = `https://api.imgbb.com/1/upload?key=${imageApiKey}`;
 
 const AddProduct = () => {
     const {register, handleSubmit, watch } = useForm();

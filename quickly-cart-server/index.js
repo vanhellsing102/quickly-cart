@@ -82,6 +82,27 @@ async function run() {
       const result = await productCollection.deleteOne(query);
       res.send(result);
     })
+    app.patch('/update-product/:id', async(req, res) =>{
+      const productId = req.params.id;
+      const updateProductData = req.body;
+      const filter = {_id: new ObjectId(productId)};
+      const updateNewProductData = {
+        $set: {
+          name: updateProductData.name,
+          brand: updateProductData.brand,
+          category: updateProductData.category,
+          subcategory: updateProductData.subcategory,
+          title: updateProductData.title,
+          price: updateProductData.price,
+          description: updateProductData.description,
+          rating: updateProductData.rating,
+          like: updateProductData.like,
+          image: updateProductData.image,
+        }
+      };
+      const result = await productCollection.updateOne(filter, updateNewProductData);
+      res.send(result);
+    })
 
     // cart related api operation----------------------------------------------------------------------
     app.delete('/cartProduct/:id', async(req, res) =>{
