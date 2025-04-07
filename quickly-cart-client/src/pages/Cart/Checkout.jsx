@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../Providers/AuthProvider';
 import { useForm } from "react-hook-form";
 import useCartProducts from '../../hooks/useCartProducts';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Checkout = () => {
     const {totalAmount} = useParams();
@@ -10,6 +11,7 @@ const Checkout = () => {
     const cartProductIds = cartProducts.map(product => product?._id);
     const {user} = useContext(AuthContext);
     const { register, handleSubmit} = useForm();
+    const axiosPublic = useAxiosPublic();
 
     const onSubmit = (data) =>{
         const payOrderData = {
@@ -22,9 +24,15 @@ const Checkout = () => {
                 zipecode: data.zipecode
             },
             totalAmount: parseInt(totalAmount),
-            cartProductIds: cartProductIds
+            cartProductIds: cartProductIds,
+            currency: "USD"
         }
-        console.log(totalAmount)
+        axiosPublic.post(`/create-payment`, payOrderData)
+        .then(res =>{
+            console.log(res.data);
+            window.location.replace(res?.data?.url);
+        })
+        // console.log(payOrderData);
     }
 
     return (

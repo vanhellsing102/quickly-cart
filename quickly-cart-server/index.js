@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 const cookieParser = require('cookie-parser');
 const app = express();
+const axios = require('axios');
 const port = process.env.PORT || 5000;
 
 
@@ -16,6 +17,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded());
 const cookieOption = {
   httpOnly: true,
   sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
@@ -53,6 +55,7 @@ async function run() {
     const userCollection = client.db("quicklyCartDB").collection("users");
     const cartCollection = client.db("quicklyCartDB").collection("carts");
     const adminCollection = client.db("quicklyCartDB").collection("admin");
+    const paymentCollection = client.db("quicklyCartDB").collection("payments");
 
     // jwt related api---------------------------------------------------------------------------------
     app.post('/jwt', async(req, res) =>{
@@ -69,6 +72,79 @@ async function run() {
       res.clearCookie("token", cookieOption).send({success: true});
     })
 
+
+    // payment related api operation----------------------------------------------------------------------
+    app.post('/create-payment', async(req, res) =>{
+      const newPaymentData = req.body;
+      const transId = new ObjectId().toString();
+      const initiatePaymentData = {
+        store_id: process.env.STORE_ID,
+        store_passwd: process.env.STORE_PASSWORD,
+        total_amount: newPaymentData?.totalAmount,
+        currency: newPaymentData?.currency,
+        tran_id: transId,
+        success_url: `http://localhost:5000/success/${newPaymentData?.email}`,
+        fail_url: "http://yoursite.com/fail.php",
+        cancel_url: "http://yoursite.com/cancel.php",
+        cus_name: newPaymentData?.name,
+        cus_email: newPaymentData?.email,
+        cus_add1: newPaymentData?.address?.city,
+        cus_add2: newPaymentData?.address?.city,
+        cus_city: newPaymentData?.address?.city,
+        cus_state: newPaymentData?.address?.city,
+        cus_postcode: newPaymentData?.address?.zipecode,
+        cus_country: newPaymentData?.address?.country,
+        cus_phone: newPaymentData?.phone,
+        cus_fax: "01711111111",
+        ship_name: newPaymentData?.name,
+        ship_add1:  newPaymentData?.address?.city,
+        ship_add2: newPaymentData?.address?.city,
+        ship_city: newPaymentData?.address?.city,
+        ship_state: newPaymentData?.address?.city,
+        ship_postcode: newPaymentData?.address?.zipecode,
+        ship_country: newPaymentData?.address?.country,
+        multi_card_name: "mastercard,visacard,amexcard",
+        value_a: "ref001_A",
+        value_b: "ref002_B",
+        value_c: "ref003_C",
+        value_d: "ref004_D",
+        shipping_method: "truck",
+        product_name: "product",
+        product_category: "all",
+        product_profile: "none"
+      }
+      const response = await axios('https://sandbox.sslcommerz.com/gwprocess/v4/api.php', {
+        method: "POST",
+        data: initiatePaymentData,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      const savePaymentData = {
+        name: newPaymentData.name,
+        email: newPaymentData.email,
+        tran_id: transId,
+        status: "pending"
+      }
+      const result = await paymentCollection.insertOne(savePaymentData);
+      if(result){
+        res.send({url: response.data.redirectGatewayURL})
+      }
+    })
+    app.post('/success/:email', async(req, res) =>{
+      const successPaymentData = req.body;
+      const paymentEmail = req.params.email;
+      const result1 = await cartCollection.deleteMany({userEmail: paymentEmail});
+      const updateDoc = {
+        $set: {
+          status: "success"
+        }
+      }
+      if(successPaymentData.status === "VALID"){
+        const result2 = await paymentCollection.updateOne({tran_id: successPaymentData.tran_id}, updateDoc);
+      }
+      console.log(successPaymentData)
+    })
 
     // admin related api operation---------------------------------------------------------------------
     app.post('/add-product', async(req, res) =>{
@@ -124,6 +200,10 @@ async function run() {
       }else{
         res.send({message: "You already have this product on this cart"});
       }
+    })
+    app.get('/all-order', async(req, res) =>{
+      const result = await cartCollection.find().toArray();
+      res.send(result);
     })
 
     // products related api operation----------------------------------------------------------------------

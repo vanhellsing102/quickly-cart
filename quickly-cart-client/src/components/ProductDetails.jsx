@@ -46,7 +46,8 @@ const ProductDetails = () => {
             totalPrice: quantity * product?.price,
             userEmail: user?.email,
             quantity,
-            date: day
+            date: day,
+            paymentStatus: "pending"
         }
         axiosPublic.post('/cart', cartProduct)
         .then(res =>{

@@ -80,7 +80,7 @@ const Navbar = () => {
                 </div>
             </div>
             <div className='flex items-center gap-7'>
-                <Link className='text-2xl font-bold text-red-500' to="/">Quickly cart</Link>
+                <Link className='text-2xl font-bold text-red-500' to="/" style={{ textShadow: "2px 2px 5px rgba(255, 0, 0, 0.8)"}}>Quickly cart</Link>
                 <div className='hidden lg:block'>
                     <ul className='flex items-center gap-5'>
                         {

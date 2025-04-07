@@ -34,7 +34,7 @@ const EditProduct = () => {
             like: 0,
             image: imageUrl ? imageUrl : data.image
         }
-        console.log(updateProductData)
+        // console.log(updateProductData);  
         axiosPublic.patch(`/update-product/${id}`, updateProductData)
         .then(res =>{
             if(res.data.modifiedCount > 0){

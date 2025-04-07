@@ -4,13 +4,15 @@ import { MdDashboard, MdManageHistory } from "react-icons/md";
 import { IoMdAdd, IoIosNotifications } from "react-icons/io";
 import { RiUser6Fill } from "react-icons/ri";
 import { CgMenuMotion } from "react-icons/cg";
+import { FaOpencart } from "react-icons/fa";
 
 const DashboardLayout = () => {
     const [openMenu, setOpenMenu] = useState(false);
 
     return (
         <div>
-            <div className='flex justify-end'>
+            <div className='flex'>
+                <Link to={'/'} className='w-32 flex items-center justify-center text-red-500 font-semibold' style={{ textShadow: "2px 2px 5px rgba(255, 0, 0, 0.8)"}}>Quick Cart</Link>
                 <div className='md:w-[calc(100%-128px)] w-full flex text-xl justify-end  items-center h-10 pr-10 gap-3 bg-blue-200 py-3'>
                     <Link><IoIosNotifications></IoIosNotifications></Link>
                     <Link><RiUser6Fill></RiUser6Fill></Link>
@@ -28,6 +30,9 @@ const DashboardLayout = () => {
                         </NavLink>
                         <NavLink onClick={() =>setOpenMenu(false)} to={'manage-product'} className='p-2' end>
                             <MdManageHistory  className='text-2xl'></MdManageHistory>
+                        </NavLink>
+                        <NavLink onClick={() =>setOpenMenu(false)} to={'order-product'} className='p-2' end>
+                            <FaOpencart className='text-2xl'></FaOpencart>
                         </NavLink>
                     </div>
                 </div>

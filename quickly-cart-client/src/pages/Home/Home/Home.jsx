@@ -8,11 +8,13 @@ import Food from '../Food/Food';
 import Benefit from '../Benefit';
 import BrandSection from '../BrandSection';
 import FashionSection from '../FashionSection';
+import Coupon from '../Coupon';
 
 const Home = () => {
     return (
         <div className='space-y-[80px]'>
             <Banner></Banner>
+            <Coupon></Coupon>
             <DisForOccasion></DisForOccasion>
             <FashionSection></FashionSection>
             <Benefit></Benefit>
