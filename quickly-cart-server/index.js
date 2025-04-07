@@ -70,6 +70,19 @@ async function run() {
     })
 
 
+    // admin related api operation---------------------------------------------------------------------
+    app.post('/add-product', async(req, res) =>{
+      const newProductData = req.body;
+      const result = await productCollection.insertOne(newProductData);
+      res.send(result);
+    })
+    app.delete('/delete-product/:id', async(req, res) =>{
+      const productId = req.params.id;
+      const query = {_id: new ObjectId(productId)};
+      const result = await productCollection.deleteOne(query);
+      res.send(result);
+    })
+
     // cart related api operation----------------------------------------------------------------------
     app.delete('/cartProduct/:id', async(req, res) =>{
       const productId = req.params.id;

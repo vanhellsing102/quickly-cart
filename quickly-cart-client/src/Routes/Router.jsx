@@ -17,6 +17,7 @@ import DashboardLayout from "../pages/AdminDashboard/DashboardLayout";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AddProduct from "../pages/AdminDashboard/AddProduct";
 import ManageProduct from "../pages/AdminDashboard/ManageProduct";
+import EditProduct from "../pages/AdminDashboard/EditProduct";
 
 const router = createBrowserRouter([
     {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
             {
                 path: 'manage-product',
                 element: <ManageProduct></ManageProduct>
+            },
+            {
+                path: 'manage-product/edit-product/:id',
+                element: <EditProduct></EditProduct>
             }
         ]
     }

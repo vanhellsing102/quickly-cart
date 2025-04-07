@@ -31,7 +31,7 @@ const DashboardLayout = () => {
                         </NavLink>
                     </div>
                 </div>
-                <div className='p-10 w-full'>
+                <div className='md:p-10 p-4 w-full'>
                     <Outlet></Outlet>
                 </div>
             </div>

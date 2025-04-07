@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { LuImagePlus } from "react-icons/lu";
 import axios from 'axios'; 
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const imageApiKey = import.meta.env.VITE_IMAGEAPIKEY;
 const imageApiUrl = `https://api.imgbb.com/1/upload?key=${imageApiKey}`
@@ -8,30 +10,58 @@ const imageApiUrl = `https://api.imgbb.com/1/upload?key=${imageApiKey}`
 const AddProduct = () => {
     const {register, handleSubmit, watch } = useForm();
     const selectCategory = watch("category");
+    const axiosPublic = useAxiosPublic();
+
     const onSubmit = async(data) =>{
-        console.log("data");
-        // console.log(data);
-        // const imageFile = data.image[0];
-        // const formData = new FormData();
-        // formData.append("image", imageFile);
-        // const res =await axios.post(imageApiUrl, formData);
-        // const imageUrl = res.data.data.display_url;
+        const imageFile = data.image[0];
+        const formData = new FormData();
+        formData.append("image", imageFile);
+        const res =await axios.post(imageApiUrl, formData);
+        const imageUrl = res.data.data.display_url;
+        const newProductData = {
+            name: data.productName,
+            brand: data.productBrand,
+            category: data.category,
+            subcategory: data.subcategory,
+            title: data.title,
+            price: parseInt(data.price),
+            description: data.description,
+            rating: parseInt(data.rating),
+            like: 0,
+            image: imageUrl
+        }
+        axiosPublic.post('/add-product', newProductData)
+        .then(res =>{
+            if(res.data.insertedId){
+                toast.success('Add New Product Successfully', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+            }
+        })
     }
     // console.log(selectCategory)
     return (
-        <div className='p-10 rounded-sm bg-slate-100'>
+        <div className='md:p-10 p-4 rounded-sm bg-slate-100'>
             <form onSubmit={handleSubmit(onSubmit)} className='w-full'> 
-                <div className='flex gap-3 items-center'>
+                <div className='md:flex gap-3 items-center'>
                     <div className='w-full'>
                         <label className='text-sm' htmlFor="product-name">Product Name:</label>
-                        <input type="text" {...register("product-name", {required: true})} className='w-full rounded-sm outline-none py-1 px-5' />
+                        <input type="text" {...register("productName", {required: true})} className='w-full rounded-sm outline-none py-1 px-5' />
                     </div>
                     <div className='w-full'>
                         <label className='text-sm' htmlFor="Brand">Product Brand:</label>
-                        <input type="text" {...register("product-brand", {required: true})} className='w-full rounded-sm outline-none py-1 px-5' />
+                        <input type="text" {...register("productBrand", {required: true})} className='w-full rounded-sm outline-none py-1 px-5' />
                     </div>
                 </div>
-                <div className='flex gap-3 items-center'>
+                <div className='md:flex gap-3 items-center'>
                     <div className='w-full'>
                         <label className='text-sm' htmlFor="category">Category:</label>
                         <select defaultValue={''} className='w-full rounded-sm outline-none py-1' {...register("category", {required: true})} name="category" id="category">
@@ -85,6 +115,7 @@ const AddProduct = () => {
                 </div>
                 <input className='bg-gradient-to-l to-purple-300 cursor-pointer font-bold text-black py-1 rounded-sm from-cyan-400 mt-2 hover:to-purple-200 duration-300 hover:scale-[102%] w-full hover:from-cyan-300' type="submit" value={"Add Product"}/>
             </form>
+            <ToastContainer></ToastContainer>
         </div>
     );
 };
