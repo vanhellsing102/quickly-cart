@@ -156,18 +156,18 @@ const navLinks = [
 const profileLinks = [
     {
         id: 1,
-        title: "My Profile",
-        link: "/profile"
-    },
-    {
-        id: 2,
         title: "My Cart",
         link: "/cart"
     },
     {
-        id: 3,
+        id: 2,
         title: "My Orders",
         link: "/orders"
-    }
+    },
+    {
+        id: 3,
+        title: "My History",
+        link: "/history"
+    },
 ]
 export default Navbar;

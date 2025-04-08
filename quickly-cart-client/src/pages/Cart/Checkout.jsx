@@ -32,7 +32,6 @@ const Checkout = () => {
         }
         axiosPublic.post(`/create-payment`, payOrderData)
         .then(res =>{
-            console.log(res.data);
             window.location.replace(res?.data?.url);
         })
         // console.log(payOrderData);

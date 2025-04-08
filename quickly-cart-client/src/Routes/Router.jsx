@@ -19,6 +19,7 @@ import AddProduct from "../pages/AdminDashboard/AddProduct";
 import ManageProduct from "../pages/AdminDashboard/ManageProduct";
 import EditProduct from "../pages/AdminDashboard/EditProduct";
 import AllOrderProduct from "../pages/AdminDashboard/AllOrderProduct";
+import History from "../pages/Cart/History";
 
 const router = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
             {
                 path: '/orders',
                 element: <PrivateRoutes><Orders></Orders></PrivateRoutes>
+            },
+            {
+                path: '/history',
+                element: <PrivateRoutes><History></History></PrivateRoutes>
             }
         ]
     },

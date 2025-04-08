@@ -120,12 +120,15 @@ async function run() {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       })
+      const date = new Date();
+      const day = date.toLocaleDateString();
       const savePaymentData = {
         name: newPaymentData.name,
         email: newPaymentData.email,
         tran_id: transId,
         status: "pending",
-        totalAmount: newPaymentData.totalAmount
+        totalAmount: newPaymentData.totalAmount,
+        paymentDate: day,
       }
       const result = await paymentCollection.insertOne(savePaymentData);
       if(result){
@@ -140,7 +143,7 @@ async function run() {
           status: "success"
         }
       }
-      const result1 = await cartCollection.updateOne({userEmail: paymentEmail}, updateDoc);
+      const result1 = await cartCollection.updateMany({userEmail: paymentEmail}, updateDoc);
       if(successPaymentData.status === "VALID"){
         const result2 = await paymentCollection.updateOne({tran_id: successPaymentData.tran_id}, updateDoc);
       }

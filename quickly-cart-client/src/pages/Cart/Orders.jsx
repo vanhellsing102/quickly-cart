@@ -3,6 +3,7 @@ import useCartProducts from '../../hooks/useCartProducts';
 
 const Orders = () => {
     const [cartProducts, isLoading, refetch] = useCartProducts();
+    const isPaymentPending = cartProducts.filter(product => product.status === "pending");
     return (
         <div className='mt-16'>
             <div className="overflow-x-auto">
@@ -20,8 +21,8 @@ const Orders = () => {
                   </thead>
                   <tbody>
                     {
-                        cartProducts.length > 0 &&
-                        cartProducts.map((product, index) =>
+                        isPaymentPending.length > 0 &&
+                        isPaymentPending.map((product, index) =>
                             <tr className='text-slate-600 text-[15px]' key={product._id}>
                                 <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
                                 <td className="border border-gray-300 px-4 py-2">{product.productId}</td>
