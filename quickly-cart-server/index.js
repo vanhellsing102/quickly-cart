@@ -124,7 +124,8 @@ async function run() {
         name: newPaymentData.name,
         email: newPaymentData.email,
         tran_id: transId,
-        status: "pending"
+        status: "pending",
+        totalAmount: newPaymentData.totalAmount
       }
       const result = await paymentCollection.insertOne(savePaymentData);
       if(result){
@@ -139,8 +140,8 @@ async function run() {
           status: "success"
         }
       }
+      const result1 = await cartCollection.updateOne({userEmail: paymentEmail}, updateDoc);
       if(successPaymentData.status === "VALID"){
-        const result1 = await cartCollection.updateOne({userEmail: paymentEmail}, updateDoc);
         const result2 = await paymentCollection.updateOne({tran_id: successPaymentData.tran_id}, updateDoc);
       }
       res.redirect("http://localhost:5173");
@@ -150,6 +151,10 @@ async function run() {
     })
     app.post('/cancel', async(req, res) =>{
       res.redirect("http://localhost:5173/checkout");
+    })
+    app.get('/payment', async(req, res) =>{
+      const result = await paymentCollection.find().toArray();
+      res.send(result);
     })
 
     // admin related api operation---------------------------------------------------------------------
