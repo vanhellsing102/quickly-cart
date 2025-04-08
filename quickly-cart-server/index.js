@@ -84,8 +84,8 @@ async function run() {
         currency: newPaymentData?.currency,
         tran_id: transId,
         success_url: `http://localhost:5000/success/${newPaymentData?.email}`,
-        fail_url: "http://yoursite.com/fail.php",
-        cancel_url: "http://yoursite.com/cancel.php",
+        fail_url: "http://localhost:5000/fail",
+        cancel_url: "http://localhost:5000/cancel",
         cus_name: newPaymentData?.name,
         cus_email: newPaymentData?.email,
         cus_add1: newPaymentData?.address?.city,
@@ -134,16 +134,22 @@ async function run() {
     app.post('/success/:email', async(req, res) =>{
       const successPaymentData = req.body;
       const paymentEmail = req.params.email;
-      const result1 = await cartCollection.deleteMany({userEmail: paymentEmail});
       const updateDoc = {
         $set: {
           status: "success"
         }
       }
       if(successPaymentData.status === "VALID"){
+        const result1 = await cartCollection.updateOne({userEmail: paymentEmail}, updateDoc);
         const result2 = await paymentCollection.updateOne({tran_id: successPaymentData.tran_id}, updateDoc);
       }
-      console.log(successPaymentData)
+      res.redirect("http://localhost:5173");
+    });
+    app.post('/fail', async(req, res) =>{
+      res.redirect("http://localhost:5173/checkout");
+    })
+    app.post('/cancel', async(req, res) =>{
+      res.redirect("http://localhost:5173/checkout");
     })
 
     // admin related api operation---------------------------------------------------------------------

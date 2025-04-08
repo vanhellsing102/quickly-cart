@@ -10,6 +10,7 @@ const AllOrderProduct = () => {
             setAllOrder(res.data);
         })
     }, [])
+    // console.log(allOrder)
     return (
         <div>
             <div className="overflow-x-auto">
@@ -41,7 +42,7 @@ const AllOrderProduct = () => {
                                 <td>{order?.quantity}</td>
                                 <td>{order?.userEmail}</td>
                                 <td>{order?.date}</td>
-                                <td className='text-red-400'>{order?.paymentStatus}...</td>
+                                <td className={`${order?.status === "success" ? "text-green-500" : "text-red-500"}`}>{order?.status}!</td>
                             </tr>
                         )
                     }

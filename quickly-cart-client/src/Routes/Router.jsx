@@ -50,7 +50,7 @@ const router = createBrowserRouter([
                 element: <PrivateRoutes><Cart></Cart></PrivateRoutes>
             },
             {
-                path: '/checkout/:totalAmount',
+                path: '/checkout',
                 element: <PrivateRoutes><Checkout></Checkout></PrivateRoutes>
             },
             {

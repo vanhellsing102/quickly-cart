@@ -6,9 +6,12 @@ import useCartProducts from '../../hooks/useCartProducts';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Checkout = () => {
-    const {totalAmount} = useParams();
+    // const {totalAmount} = useParams();
     const [cartProducts] = useCartProducts();
     const cartProductIds = cartProducts.map(product => product?._id);
+    const isPaymentProduct = cartProducts.filter(product => product.status === "pending");
+    const totalAmount = isPaymentProduct.reduce((acc, product) => acc + product.totalPrice, 0)
+    // console.log(totalAmount)
     const {user} = useContext(AuthContext);
     const { register, handleSubmit} = useForm();
     const axiosPublic = useAxiosPublic();

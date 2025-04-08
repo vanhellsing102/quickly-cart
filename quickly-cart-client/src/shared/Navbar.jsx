@@ -16,7 +16,7 @@ const Navbar = () => {
     const {user, logoutUser} = useContext(AuthContext);
     const axiosPublic = useAxiosPublic();
     const [cartProducts] = useCartProducts();
-
+    const isPaymentCartProduct = cartProducts.filter(product => product.status === "pending");
     const handleLogOut = () =>{
         logoutUser()
         .then(() =>{
@@ -122,7 +122,7 @@ const Navbar = () => {
                 </div>
                 <Link to={'/cart'} className='relative cursor-pointer'>
                     <FaCartShopping className='hover:text-xl hover:text-red-500'></FaCartShopping>
-                    <p className='absolute -top-1 -right-[5px] bg-red-600 h-3 flex items-center justify-center w-3 rounded-full text-white text-[10px] font-bold'>{cartProducts.length}</p>
+                    <p className='absolute -top-1 -right-[5px] bg-red-600 h-3 flex items-center justify-center w-3 rounded-full text-white text-[10px] font-bold'>{isPaymentCartProduct.length}</p>
                 </Link>
             </div>
         </div>

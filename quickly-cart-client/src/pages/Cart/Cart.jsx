@@ -50,9 +50,11 @@ const Cart = () => {
           });
     }   
     const totalAmount = subTotal - discountAmount;
+    const isPaymentCartProduct = cartProducts.filter(product => product.status === "pending");
+    // console.log(isPaymentCartProduct);
     return (
         <div>
-            <h1 className='text-4xl font-bold text-center mt-6 text-red-500'>Your Cart (<span className='text-3xl font-medium text-slate-700'> {cartProducts.length} item</span> )</h1>
+            <h1 className='text-4xl font-bold text-center mt-6 text-red-500'>Your Cart (<span className='text-3xl font-medium text-slate-700'> {isPaymentCartProduct.length} item</span> )</h1>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-7'>
                 {/* product */}
                 <div className="overflow-x-auto rounded-box border border-base-300 bg-base-100 mt-6 md:col-span-2">
@@ -70,8 +72,8 @@ const Cart = () => {
                       </thead>
                       <tbody>
                         {
-                            cartProducts.length > 0 &&
-                            cartProducts.map((product, index) =>
+                            isPaymentCartProduct.length > 0 &&
+                            isPaymentCartProduct.map((product, index) =>
                                 <tr key={product?._id}>
                                     <td>{index + 1}</td>
                                     <td>
@@ -119,7 +121,7 @@ const Cart = () => {
                         </div>
                     </div>
                     <div className='overflow-hidden'>
-                        <Link to={`/checkout/${totalAmount}`}>
+                        <Link to={`/checkout`}>
                             <button className='flex items-center gap-2 w-full justify-center group bg-blue-500 py-2 text-white cursor-pointer hover:scale-105 font-semibold'>Go to CheckOut<IoBagCheckOutline className='group-hover:translate-x-2 transition-all duration-200'></IoBagCheckOutline></button>
                         </Link>
                     </div>

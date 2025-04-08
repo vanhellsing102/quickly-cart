@@ -47,7 +47,7 @@ const ProductDetails = () => {
             userEmail: user?.email,
             quantity,
             date: day,
-            paymentStatus: "pending"
+            status: "pending"
         }
         axiosPublic.post('/cart', cartProduct)
         .then(res =>{
