@@ -2,9 +2,35 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebookSquare, FaGithubSquare, FaLinkedin, FaYoutube } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
+import useAxiosPublic from '../hooks/useAxiosPublic';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const Footer = () => {
+    const axiosPublic = useAxiosPublic();
     const year = new Date().getFullYear();
+
+    const handleSubscribe = e =>{
+        e.preventDefault();
+        const email = e.target.email.value;
+        axiosPublic.post('/sendMail', {email: email})
+        .then(res =>{
+            // console.log(res.data.message);
+            if(res.data.message){
+                toast.success(res?.data?.message, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+            }
+        })
+        // console.log(email);
+    }
     return (
     <footer className='bg-slate-200 md:p-10 p-3 mt-20'>
              <div className='grid grid-cols-2 md:grid-cols-6 gap-5 md:gap-0'>
@@ -61,9 +87,9 @@ const Footer = () => {
                 </div>
              </div>
              <div className='mt-6 flex justify-center'>
-                <form>
+                <form onSubmit={handleSubscribe}>
                     <div>
-                        <input className='outline-none rounded-tl-sm rounded-bl-sm border-gray-400 py-1 px-3' type="email" placeholder='example@gmail.com'/>
+                        <input className='outline-none rounded-tl-sm rounded-bl-sm border-gray-400 py-1 px-3' type="email" name='email' placeholder='example@gmail.com'/>
                         <button className='bg-red-300 py-1 border cursor-pointer border-gray-400 rounded-tr-sm rounded-br-sm px-2 font-medium'>Subscribe</button>
                     </div>
                 </form>
@@ -83,6 +109,7 @@ const Footer = () => {
                 </div>
                 <p className='text-center'>&#xa9; {year} clarity money</p>
              </div>
+             <ToastContainer></ToastContainer>
         </footer>
     );
 };

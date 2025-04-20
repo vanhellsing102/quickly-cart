@@ -2,6 +2,7 @@ require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 const cookieParser = require('cookie-parser');
@@ -9,7 +10,7 @@ const app = express();
 const axios = require('axios');
 const port = process.env.PORT || 5000;
 
-
+// console.log(process.env.NODEMAILER_PASS);
 // ------------------------------------------------------------------------------------------------------------------
 app.use(cors({
   origin: ['http://localhost:5173'],
@@ -56,6 +57,34 @@ async function run() {
     const cartCollection = client.db("quicklyCartDB").collection("carts");
     const adminCollection = client.db("quicklyCartDB").collection("admin");
     const paymentCollection = client.db("quicklyCartDB").collection("payments");
+
+
+    // contact related api-------------------------------------------------------------------------
+    app.post('/sendMail', async(req, res) =>{
+      const newEmail = req.body.email;
+      // console.log(newEmail);
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.NODEMAILER_USER,
+          pass: process.env.NODEMAILER_PASS
+        }
+      })
+      const mailOptions = {
+        from: newEmail,
+        to: process.env.NODEMAILER_USER,
+        subject: `New Contact Us`,
+        text: `You have receive new subscription from ${newEmail}`
+      }
+      await transporter.sendMail(mailOptions, (error, info) =>{
+        if(error){
+          console.log(error);
+        } else{
+          // console.log("email sent")
+          res.send({message: "Thanks for subscribing!"})
+        }
+      })
+    })
 
     // jwt related api---------------------------------------------------------------------------------
     app.post('/jwt', async(req, res) =>{
