@@ -20,6 +20,8 @@ import ManageProduct from "../pages/AdminDashboard/ManageProduct";
 import EditProduct from "../pages/AdminDashboard/EditProduct";
 import AllOrderProduct from "../pages/AdminDashboard/AllOrderProduct";
 import History from "../pages/Cart/History";
+import About from "../pages/About/About";
+import Blogs from "../pages/Blogs/Blogs";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
             {
                 path: '/shop',
                 element: <Shop></Shop>
+            },
+            {
+                path: '/about',
+                element: <About></About>
+            },
+            {
+                path: '/blogs',
+                element: <Blogs></Blogs>
             },
             {
                 path: '/product-details/:id',

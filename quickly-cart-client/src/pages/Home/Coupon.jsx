@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import  './Coupon.css';
+Modal.setAppElement('#root'); 
 
 const Coupon = () => {
     const [openModal, setOpenModal] = useState(false);
