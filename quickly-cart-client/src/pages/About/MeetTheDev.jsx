@@ -5,25 +5,26 @@ import {Link} from "react-router-dom"
 
 const MeetTheDev = () => {
     return (
-        <div className="flex flex-col items-center">
-            <h2 className='text-3xl font-semibold text-blue-600 mb-1'>Meet the developer:</h2>
-            <div>
-                <p className="flex items-center gap-2">
-                    <FaConnectdevelop className="text-2xl"></FaConnectdevelop>
-                    <span className="text-lg">Developed by <span className="font-medium text-red-500">Murad</span></span>
-                </p>
-                <p className="flex items-center gap-2">
-                    <TfiEmail className="text-xl"></TfiEmail>
-                    <span className="font-semibold">Email:</span>
-                    <span className="text-lg">vvanhellsing30@gmail.com</span>
-                </p>
-                <p className="flex items-center gap-2">
-                    <FiGithub className="text-2xl"></FiGithub>
-                    <span className="font-semibold">Github:</span>
-                    <a className="underline underline-offset-2" href="https://github.com/vanhellsing102" target="_blank">Github</a>
-                </p>
-            </div>
+        <div className="bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+      <h2 className="text-4xl font-bold text-center text-blue-700 mb-6">Meet the Developer</h2>
+      <div className="space-y-6">
+        <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <FaConnectdevelop className="text-3xl text-blue-600" />
+          <div>
+            <p className="text-xl font-semibold text-blue-800">Murad</p>
+            <p className="text-lg text-gray-700">Full Stack Developer</p>
+          </div>
         </div>
+        <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <TfiEmail className="text-3xl text-blue-600" />
+          <a href="mailto:vvanhellsing30@gmail.com" className="text-lg text-blue-800 hover:underline">vvanhellsing30@gmail.com</a>
+        </div>
+        <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <FiGithub className="text-3xl text-blue-600" />
+          <a href="https://github.com/vanhellsing102" target="_blank" rel="noopener noreferrer" className="text-lg text-blue-800 hover:underline">GitHub Profile</a>
+        </div>
+      </div>
+    </div>
     );
 };
 

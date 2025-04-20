@@ -7,7 +7,7 @@ import MeetTheDev from './MeetTheDev';
 
 const About = () => {
     return (
-        <div className='mt-5 space-y-5'>
+        <div className='mt-5 space-y-10'>
             <Ourmission></Ourmission>
             <MySelf></MySelf>
             <WhyQuickyCart></WhyQuickyCart>
