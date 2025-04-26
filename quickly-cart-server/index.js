@@ -8,12 +8,12 @@ const secret = process.env.JWT_SECRET;
 const cookieParser = require('cookie-parser');
 const app = express();
 const axios = require('axios');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // console.log(process.env.NODEMAILER_PASS);
 // ------------------------------------------------------------------------------------------------------------------
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  origin: ['http://localhost:5173', 'https://quickly-cart.web.app'],
   credentials: true
 }));
 app.use(express.json());
@@ -112,9 +112,9 @@ async function run() {
         total_amount: newPaymentData?.totalAmount,
         currency: newPaymentData?.currency,
         tran_id: transId,
-        success_url: `http://localhost:5000/success/${newPaymentData?.email}`,
-        fail_url: "http://localhost:5000/fail",
-        cancel_url: "http://localhost:5000/cancel",
+        success_url: `https://quickly-cart-server.vercel.app/success/${newPaymentData?.email}`,
+        fail_url: "https://quickly-cart-server.vercel.app/fail",
+        cancel_url: "https://quickly-cart-server.vercel.app/cancel",
         cus_name: newPaymentData?.name,
         cus_email: newPaymentData?.email,
         cus_add1: newPaymentData?.address?.city,
@@ -224,12 +224,12 @@ async function run() {
     })
 
     // cart related api operation----------------------------------------------------------------------
-    app.delete('/cartProduct/:id', async(req, res) =>{
+    app.delete('/cartProduct/:id', verifyToken, async(req, res) =>{
       const productId = req.params.id;
       const deleteProduct = await cartCollection.deleteOne({_id: new ObjectId(productId)});
       res.send(deleteProduct);
     })
-    app.get('/cartProducts/:email', async(req, res) =>{
+    app.get('/cartProducts/:email', verifyToken, async(req, res) =>{
       const email = req.params.email;
       const result = await cartCollection.find({userEmail: email}).toArray();
       res.send(result);
@@ -308,7 +308,7 @@ async function run() {
       const result = await userCollection.insertOne(newUser);
       res.send(result);
     })
-    app.post('/admin', async(req, res) =>{
+    app.post('/admin', verifyToken, async(req, res) =>{
       const userName = req.body.userName;
       const password = req.body.password;
       const admin = await adminCollection.findOne({userName: userName});
@@ -323,8 +323,8 @@ async function run() {
       }
     })
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
