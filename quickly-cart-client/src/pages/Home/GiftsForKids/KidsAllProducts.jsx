@@ -3,7 +3,7 @@ import enjoykids from '../../../assets/bannerkids/enjoykids-Photoroom.png';
 import Product from '../../../components/Product';
 import useProductsByCategory from '../../../hooks/useProductsByCategory';
 import { FcLandscape } from "react-icons/fc";
-import './kids.css';
+import './Kids.css';
 
 const KidsAllProducts = () => {
     const [productsCategory] = useProductsByCategory("toy");
