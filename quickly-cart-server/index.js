@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 // console.log(process.env.NODEMAILER_PASS);
 // ------------------------------------------------------------------------------------------------------------------
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://quickly-cart-client.vercel.app'],
+  origin: ['http://localhost:5173', 'https://quickly-cart-server.vercel.app'],
   credentials: true
 }));
 app.use(express.json());
